@@ -1,2 +1,2 @@
 # CrossPaste gray theme & white background fix
-Fix corsspaste's white background with white text, and turn to gray theme. Base on Tempermonkey.
+Fix white background with white text in CrossPaste website, and turn to gray theme. Base on Tempermonkey.
