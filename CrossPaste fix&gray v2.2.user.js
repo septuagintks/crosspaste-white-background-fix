@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         CrossPaste 护眼灰主题
+// @name         CrossPaste white background fix
 // @namespace    http://tampermonkey.net/
-// @version      2.1
+// @version      2.2
 // @match        https://crosspaste.app/app*
-// @grant        none
+// @author       Septuagint,URL:https://Candy-spt.com/
 // ==/UserScript==
 
 (function () {
@@ -11,16 +11,12 @@
 
     function injectTheme() {
         const existing = document.getElementById('crosspaste-theme');
-        if (existing) existing.remove(); // 每次强制刷新，防止被覆盖
+        if (existing) existing.remove(); 
 
         const style = document.createElement('style');
         style.id = 'crosspaste-theme';
 
         style.innerHTML = `
-        /*
-         * 修复1：同时覆盖 :root 和 html.dark（页面使用了 class="dark"）
-         * 修复2：变量格式改为 shadcn/ui 的 HSL 格式 "H S% L%"
-         */
         :root,
         html,
         html.dark {
@@ -43,7 +39,6 @@
             --secondary:          0 0% 30%   !important;
             --secondary-foreground: 0 0% 90% !important;
 
-            /* 补上原脚本缺失的变量（hover 态用到） */
             --accent:             0 0% 32%   !important;
             --accent-foreground:  0 0% 90%   !important;
 
@@ -51,13 +46,11 @@
             --ring:               0 0% 47%   !important;
         }
 
-        /* 兜底：body 背景直接写死，防止变量失效时露白 */
         body {
             background-color: rgb(64, 64, 64) !important;
             color: rgb(230, 230, 230) !important;
         }
 
-        /* textarea 有内联 Tailwind 任意值 bg-[#f9f9f9]，必须 !important 覆盖 */
         textarea {
             background-color: rgb(58, 58, 58) !important;
             color: rgb(230, 230, 230) !important;
@@ -72,18 +65,16 @@
         button:hover {
             filter: brightness(1.1);
         }
-        /* === 保留 Paste 按钮（bg-primary）原始配色 === */
         button.bg-primary {
         background-color: hsl(271.88, 85.89%, 47.25%) !important;
         color: hsl(0 0% 9%) !important;
         }
 
         button.bg-primary:hover {
-        background-color: hsl(0 0% 88%) !important;  /* 略暗，模拟 hover:bg-primary/90 */
-        filter: none !important;  /* 取消全局 button:hover 的 brightness */
+        background-color: hsl(0 0% 88%) !important; 
+        filter: none !important;  
         }
 
-        /* 按钮内的 svg 和 span 文字也要跟着改回深色 */
         button.bg-primary svg,
         button.bg-primary span {
         color: hsl(0 0% 88%) !important;
@@ -95,7 +86,6 @@
 
     injectTheme();
 
-    // 监听 DOM 变化，防止框架重渲染后丢失样式
     const observer = new MutationObserver(() => {
         if (!document.getElementById('crosspaste-theme')) {
             injectTheme();
